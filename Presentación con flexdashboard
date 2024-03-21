@@ -1,0 +1,459 @@
+---
+title: "Comparación entre Norte América y Ecuador"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: united
+    storyboard: true
+    social: menu
+    source: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(devtools)
+library(data.table)
+library(wpp2022)
+library(ggplot2)
+library(plotly)
+library(highcharter)
+options(scipen=999)
+```
+
+# Carátula
+
+### 
+
+```{r}
+valueBox("Universidad Central del Ecuador", icon = "fa-solid fa-school", col="#D8BFD8")
+```
+
+------------------------------------------------------------------------
+
+### 
+
+```{r}
+valueBox("Construcción de Indicadores", icon = "fa-solid fa-book-open", col="#CD96CD")
+```
+
+------------------------------------------------------------------------
+
+### 
+
+```{r}
+valueBox("Trabajo grupal", icon = "fa-solid fa-person-chalkboard", col="#D8BFD8")
+```
+
+------------------------------------------------------------------------
+
+
+### ![](images/istockphoto-1354236446-612x612.jpg){width="380"}
+
+
+### Aguirre Andrea, Bonilla Martin, Lanchimba Nataly
+
+```{r}
+valueBox("Integrantes:", icon = "fa-sharp fa-solid fa-users", col="#FFDAB9")
+```
+
+------------------------------------------------------------------------
+
+# Antecedentes
+
+###
+```{r}
+valueBox("Ecuador", icon = "fa-pencil", col="#FF6A6A")
+```
+------------------------------------------------------------------------
+
+### De acuerdo con proyecciones de Naciones Unidas (2019), la población ecuatoriana se duplicó entre 1950 y 1975, y volvió a duplicarse hacia el año 2010. Para 2020, la población se quintuplicará con relación al total observado en 1950. Sin embargo, la era de rápido crecimiento poblacional ha llegado a su fin, ya que la ONU predice que la población de Ecuador sólo crecerá en alrededor de 40% en las décadas por venir. Al mismo tiempo que el ritmo de crecimiento disminuirá, la proporción de personas de edad 60 y más continuará en aumento. Actualmente, la proporción de la población en ese rango de edades es de sólo 11%, pero alcanzará un 21% en el transcurso de los siguientes 30 años. A este ritmo, Ecuador se convertirá en una sociedad envejecida para el año 2065; es decir, el grupo de personas de 60 años y más será el grupo mayoritario del país.
+
+```{r}
+valueBox("", icon = "fa-pencil", col="#FFE7BA")
+```
+------------------------------------------------------------------------
+
+### 
+
+```{r}
+valueBox("Norte América", icon = "fa-pencil", col="#FF4040")
+```
+
+------------------------------------------------------------------------
+
+### Después de la Segunda Guerra Mundial, se produjo un aumento significativo de la natalidad en América del Norte. Este fenómeno, conocido como el baby boom, se debió a una serie de factores, como el regreso de los soldados de la guerra, la mejora de la economía y el cambio de valores sociales. Los movimientos de derechos civiles comenzaron en la década de 1960 logrando avances significativos, sin embargo la lucha por la igualdad continuó en los años décadas posteriores.
+
+```{r}
+valueBox("1945-1960", icon = "fa-pencil", col="#FFDEAD")
+```
+
+------------------------------------------------------------------------
+
+### La Guerra de Vietnam fue un tema central durante la década de 1970 y las protestas contra la guerra se intensificaron.	Además, Estados Unidos enfrentó una crisis energética debido a la escasez de petróleo. A finales de esta década la presidencia de Jimmy Carter se enfrentó a desafíos económicos, incluida la alta inflación y el desempleo.
+
+```{r}
+valueBox("1970-1980", icon = "fa-pencil", col="#FFDAB9")
+```
+------------------------------------------------------------------------
+
+### A inicios de la década de 1980, la Guerra Fría llegó a su fin eliminando la tensión social, política y económica. Así mismo, aumento la inmigración: La inmigración a América del Norte se incremento significativamente en esta década, especialmente desde países con altas tasas de fecundidad como aquellos de América Latina. 
+
+```{r}
+valueBox("1981-1990", icon = "fa-pencil", col="#FFDEAD")
+```
+------------------------------------------------------------------------
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+#Filtrar América
+data(pop1dt)
+data(tfr1dt)
+data(percentASFR1dt)
+data(e01dt)
+popame<-pop1dt[name=="Northern America"]
+tframe<-tfr1dt[name=="Northern America"]
+percename<-percentASFR1dt[name=="Northern America"]
+e01ame<-e01dt[name=="Northern America"]
+
+#Filtrar Ecuador
+popecu<-pop1dt[name=="Ecuador"]
+tfrecu<-tfr1dt[name=="Ecuador"]
+percenecu<-percentASFR1dt[name=="Ecuador"]
+e01ecu<-e01dt[name=="Ecuador"]
+
+#Razón de sexos
+popame[,RS:=(popM/popF)*100]
+popecu[,RS:=(popM/popF)*100]
+
+#Proporción de masculinidad
+
+popame[,PM:=round((popM/pop)*100,2)]
+popecu[,PM:=round((popM/pop)*100,2)]
+
+```
+
+# Población General
+
+## Column 1 {data="width=300"}
+
+### Razón de sexos
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+plot_ly(data=popame, x=~year) %>%
+  add_trace(y=~RS, name="Norte América", mode='lines+markers') %>%
+  add_trace(y=~popecu$RS, name="Ecuador", mode='lines+markers') %>%
+  layout(xaxis = list(title = "Años"),
+         yaxis = list(title = "Razón"))
+
+```
+
+### Las gráficas que indican la razón de sexos para Norte América y Ecuador ha variado a lo largo de los años y se puede ver que en el continente norteamericano existe una razón de sexos la cual empieza a bajar desde 1953. Se podría decir que que desde ese año el contiente norteamericano ha tenido una disminución de la cantidad de hombres, es decir existe un mayor número de mujeres en comparación con Ecuador.
+
+```{r}
+valueBox("Interpretación", icon ="fa-sharp fa-solid fa-person", col="#FFBBFF")
+```
+
+------------------------------------------------------------------------
+
+### Después de la Segunda Guerra Mundial, se produjo un aumento significativo de la natalidad en América del Norte. Este fenómeno, conocido como el baby boom, se debió a una serie de factores, como el regreso de los soldados de la guerra, la mejora de la economía y el cambio de valores sociales. Con esto se puede contrastar el hecho de que la poblaicón haya ido incrmenetando en Norte América. Por otro lado, Ecuador también presentan una tendencia de crecimiento en lo que respecta a la población lo cual se puede atribuir aeventos de mejoras en la economía debido al boom bananero que fue seguido del boom petrolero.
+
+```{r}
+valueBox("Eventos relevantes", icon ="fa-sharp fa-solid fa-person-breastfeeding", col="#DA70D6")
+```
+
+------------------------------------------------------------------------
+
+## \## Column2 {data-width="500"}
+
+### Población del Ecuador
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+plot_ly(data=popecu, x=~year) %>%
+  add_trace(y=~pop, name="Total", mode='lines+markers') %>%
+  add_trace(y=~popM, name="Hombres", mode='lines+markers') %>%
+  add_trace(y=~popF, name="Mujeres", mode='lines+markers') %>%
+  layout(xaxis = list(title = "Años"),
+         yaxis = list(title = "Población total"))
+
+```
+
+### Población de Norte América
+
+```{r}
+plot_ly(data=popame, x=~year) %>%
+  add_trace(y=~pop, name="Total", mode='lines+markers') %>%
+  add_trace(y=~popM, name="Hombres", mode='lines+markers') %>%
+  add_trace(y=~popF, name="Mujeres", mode='lines+markers') %>%
+  layout(xaxis = list(title = "Años"),
+         yaxis = list(title = "Población total"))
+```
+
+# Fecundidad
+
+## Column 1 {data="width=300"}
+
+### Norte America
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+
+ggplotly(ggplot(tframe, aes(x = year, y = tfr)) +
+  geom_line(color = "pink", size = 1) +
+  geom_point(color = "red", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed", color = "blue") +
+  labs(title = "Tasa de fecundidad por años en Norte América",
+       x = "Año",
+       y = "Tasa de fecundidad total") +
+  theme_minimal())
+
+```
+
+### Ecuador
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+
+ggplotly(ggplot(tfrecu, aes(x = year, y = tfr)) +
+  geom_line(color = "pink", size = 1) +
+  geom_point(color = "red", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed", color = "blue") +
+  labs(title = "Tasa de fecundidad por años en Ecuador",
+       x = "Año",
+       y = "Tasa de fecundidad total") +
+  theme_minimal())
+
+```
+
+### A finales de la década de 1960 y principios de la década de 1970, las tasas de natalidad comenzaron a disminuir en algunos países de América del Norte. Factores como la disponibilidad de métodos anticonceptivos y cambios en las actitudes hacia la familia y el trabajo influyeron en este descenso. Con esto como antecedende se puede notar que la tendencia es a seguir diminuyendo sobre todo en Norte América los cuales desde 1950 presentaban tasas de fecundidad menores al Ecuador, por ejemplo en 1960 se tenía una tasa de aproximadamente 6 con una de 3 para Norte América. Norte América presenta un mayor adelanto en la transición demográfica por lo cual sus tasas de fecundidad disminuyeron mucho antes que las de Ecuador. En la actualidad las tasas son menores en los dos contextos, pero considerando que la de Norte América sigue siendo menor que la de Ecuador con un 1.64 para el 2021 frente a un 2.02 respectivamente.
+
+```{r}
+valueBox("Disminución de las tasas de natalidad", icon = "fa-sharp fa-solid fa-people-simpe", col="#DDA0DD")
+```
+
+------------------------------------------------------------------------
+
+## \## Column2 {data-width="500"}
+
+### Otras causas de que la tasa de fecundidad bajara tiene que ver con mejores condiciones para las mujeres, las cuales cada vez fueron incrementando su nivel de escolaridad. Esto permitió que puedan tener acceso a mejores condiciones donde del mercado laboral. Las mujeres cambiaron con el paso del tiempo sus deseos por lo cual recurrian a la planificación familiar tomando decisiones sobre su reproducción. Las tasas de natalidad variaron entre los años 1990 y 2000, y en algunos países de América del Norte, como Canadá y Estados Unidos, se observó un aumento en los nacimientos. Esto se vio influido en gran manera por las olas migratorias que llegaban a Norte América por lo cual se puede decir que la migración es un factor importante de este indicador.
+
+```{r}
+valueBox("Fecundidad baja", icon = "fa-sharp fa-solid fa-baby", col="#EEAEEE")
+```
+
+------------------------------------------------------------------------
+
+### Comparación Norte América y Ecuador
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+plot_ly(data=tfrecu, x=~year) %>%
+  add_trace(y=~tfr, name="Ecuador", mode='lines+markers') %>%
+  add_trace(y=~tframe$tfr, name="Norte América", mode='lines+markers') %>%
+  layout(xaxis = list(title = "Años"),
+         yaxis = list(title = "Tasa de fecundidad"))
+```
+
+# Tasas específicas de fecundidad
+
+## Column 1 {data="width=800"}
+
+### Norte América
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+ggplotly(ggplot(percename, aes(x = age, y = pasfr, 
+                               color = factor(year))) +
+  geom_line() +
+  labs(title = "Tasa de fecundidad específica por edad Norte América",
+       x = "Edad",
+       y = "Porcentaje por edad de tasa de fecundidad",
+       color = "Años") +
+  theme_minimal() +
+  theme(legend.position = "none"))
+```
+
+### Ecuador
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+ggplotly(ggplot(percenecu, aes(x = age, y = pasfr, 
+                               color = factor(year))) +
+  geom_line() +
+  labs(title = "Tasa de fecundidad específica por edad Ecuador",
+       x = "Edad",
+       y = "Porcentaje por edad de tasa de fecundidad",
+       color = "Años") +
+  theme_minimal() +
+  theme(legend.position = "none"))
+```
+
+## Column 2 {data="width=200"}
+
+### ![Disminución de la fecundidad](images/images.jpeg){width="500"}
+
+### Como se puede ver existe tanto en Norte América como en Ecuador una disminución de las tasas de fecundidad en las edades más jóvenes, esto indica que cada vez es menor la concepción por mujeres en edades menores a 20 años en la actualidad. 
+
+```{r}
+valueBox("Disminución de la fecundiad en edades jóvenes", icon = "fa-sharp fa-solid fa-users", col="#DDA0DD")
+```
+------------------------------------------------------------------------
+
+### Por otro lado es claramente evidente que Norte América presenta una mayor rapidez con el retraso del embarazo ya que logran disminuir sus tasas de fecundidad en edades tempranas en años anteriores a los del Ecuador. Ecuador por su parte continúa disminuyendo el embarazo adolescente con el paso de los años. 
+
+```{r}
+valueBox("", icon = "fa-sharp fa-solid fa-users", col="#FFC1C1")
+```
+------------------------------------------------------------------------
+
+### Se espera que en años posteriores la tasa de fecundidad se concentre en edades entre los 30 años o más. Norte América presenta un adelanto ya que en 2023 la tasa de fecundidad es de 6.38 a la edad de 31 años, mientras que para Ecuador es de 4.22.
+
+```{r}
+valueBox("", icon = "fa-sharp fa-solid fa-users", col="#DDA0DD")
+```
+------------------------------------------------------------------------
+
+# Mortalidad
+
+## Column 1 {data="width=300"}
+
+### Norte América
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+plot_ly(data=e01ame, x=~year) %>%
+  add_trace(y=~e0B, name="Total", mode='lines+markers') %>%
+  add_trace(y=~e0M, name="Hombres", mode='lines+markers') %>%
+  add_trace(y=~e0F, name="Mujeres", mode='lines+markers') %>%
+  layout(xaxis = list(title = "Años"),
+         yaxis = list(title = "Población total"), 
+         title = "Esperanza de vida en Norte América")
+```
+
+### Ecuador
+
+```{r warning=FALSE,error=FALSE,comment="",message=FALSE,echo=FALSE}
+plot_ly(data=e01ecu, x=~year) %>%
+  add_trace(y=~e0B, name="Total", mode='lines+markers') %>%
+  add_trace(y=~e0M, name="Hombres", mode='lines+markers') %>%
+  add_trace(y=~e0F, name="Mujeres", mode='lines+markers') %>%
+  layout(xaxis = list(title = "Años"),
+         yaxis = list(title = "Población total"), 
+         title = "Esperanza de vida en Ecuador")
+```
+
+### La esperanza claramente es mayor en Norte América por la disminución de las tasas de defunciones a lo largo de las décadas debido a mejoras en la atención médica, avances en la medicina y condiciones de vida más saludables. En Ecuador también se puede ver que existió un aumento en los años que se espera que vivan las personas. La tendencia de crecimiento de la esperanza de vida se vió afectada por la pandemia de COVID-19 la cual ha tenido un impacto significativo en la demografía de América del Norte y Ecuador. Esta ha provocado un aumento de la mortalidad, especialmente entre las personas mayores. Además, ha tenido un impacto negativo en la fecundidad, ya que muchas mujeres han retrasado o cancelado sus planes de tener un hijo. Finalmente, se puede decir que la esperanza de vida presentaba un crecimiento constante hasta que se vío afectada por la pandemia. Se reducieron las esperanzas de vida tanto en Norte América como en Ecuador siendo para el 2020 de 80 y 79 años en mujeres. En los hombres es de 75 y 68 años para Norte América y Ecuador.
+
+```{r}
+valueBox("Esperanza de vida en Ecuador y Norte América", icon = "fa-sharp fa-solid fa-truck-medical", col="#FFC1C1")
+```
+
+------------------------------------------------------------------------
+
+# Piramide poblacional
+
+## Column 1 {data="width=2000"}
+
+```{r}
+popAge1dt[,Int:=trunc(age/5)]
+popAge1dt[,Int1:=ifelse(Int<=0,"00 - 04",
+                    ifelse(Int==1,"05 - 09",
+                           ifelse(Int==2,"10 - 14",
+                                  ifelse(Int==3,"15 - 19",
+                                         ifelse(Int==4,"20 - 24",
+                                                ifelse(Int==5,"25 - 29",
+                                                       ifelse(Int==6,"30 - 34",
+                                                              ifelse(Int==7,"35 - 39",
+                                                                     ifelse(Int==8,"40 - 44",
+                                                                            ifelse(Int==9,"45 - 49",
+                                                                                   ifelse(Int==10,"50 - 54",
+                                                                                          ifelse(Int==11,"55 - 59",
+                                                                                                 ifelse(Int==12,"60 - 64",
+                                                                                                        ifelse(Int==13,"65 - 69",
+                                                                                                               ifelse(Int==14,"70 - 74",
+                                                                                                                      ifelse(Int==15,"75 - 79",
+                                                                                                                             ifelse(Int==16,"80 - 84",
+                                                                                                                                    ifelse(Int>=17,"85 a mas",NA))))))))))))))))))]
+pirame<-popAge1dt[name=="Northern America" & year==2021,.(popM,popF,Int1)]
+pirame1<-pirame[,.(Hombres=sum(popM),Mujeres=sum(popF)),Int1]
+pirame2<-pirame1[,.(Hombres,Mujeres,Int1)]
+
+ggplotly(ggplot(pirame2) +
+  geom_bar(aes(x = Int1,
+                y = -Hombres),
+           stat = "identity", width = 0.5, fill = "blue") +
+  geom_bar(aes(x = Int1,
+                y = Mujeres),
+           stat = "identity", width = 0.5, fill = "pink") +
+  coord_flip() +
+  ggthemes::theme_tufte() +
+  theme(plot.title = element_text(family = "Arial", hjust = 0.5, size = 18),
+        axis.text.x = element_text(family = "Arial"),
+        axis.text.y = element_text(family = "Arial")
+  )+
+  labs(title = "Pirámide Poblacional de Norte América, 2021",
+       x = "",
+       y = "Hombres                        Mujeres") +
+   scale_y_continuous(
+     breaks = c(seq(-10000, 0, by = 5000),
+                seq(0, 10000, by = 5000)),
+     labels = c(rev(seq(0, 10000, by = 5000)),
+               seq(0, 10000, by = 5000))))
+
+```
+
+
+## Column 2 {data="width=2000"}
+
+```{r}
+pirecu<-popAge1dt[name=="Ecuador" & year==2021,.(popM,popF,Int1)]
+pirecu1<-pirecu[,.(Hombres=sum(popM),Mujeres=sum(popF)),Int1]
+pirecu2<-pirecu1[,.(Hombres,Mujeres,Int1)]
+ggplotly(ggplot(pirecu2) +
+  geom_bar(aes(x = Int1,
+                y = -Hombres),
+           stat = "identity", width = 0.5, fill = "blue") +
+  geom_bar(aes(x = Int1,
+                y = Mujeres),
+           stat = "identity", width = 0.5, fill = "pink") +
+  coord_flip() +
+  ggthemes::theme_tufte() +
+  theme(plot.title = element_text(family = "Arial", hjust = 0.5, size = 18),
+        axis.text.x = element_text(family = "Arial"),
+        axis.text.y = element_text(family = "Arial")
+  )+
+  labs(title = "Pirámide Poblacional de Ecuador, 2021",
+       x = "",
+       y = "Hombres                        Mujeres") +
+   scale_y_continuous(
+     breaks = c(seq(-1000, 0, by = 200),
+                seq(0, 1000, by = 200)),
+     labels = c(rev(seq(0, 1000, by = 200)),
+               seq(0, 1000, by = 200))))
+
+```
+
+# Bibliografía
+
+### Timetoast. (1960, 6 febrero). ACONTECIMIENTOS IMPORTANTES DECADAS 60-70-80-90-2000 timeline. Timetoast timelines. https://www.timetoast.com/timelines/revolucion-pacifica
+
+```{r}
+valueBox(" ", icon = "fa-sharp fa-solid fa-pen", col="#FFC1C1")
+```
+***
+
+### Valderrama, Á. (2023, 27 octubre). Los años 70. AARP. https://www.aarp.org/espanol/politica/historia/info-2016/sucesos-importantes-que-ocurrieron-en-1970-fotos.html
+```{r}
+valueBox(" ", icon = "fa-sharp fa-solid fa-pen", col="#FFC1C1")
+```
+***
+### Delaunay, León, Portais. Publicación del Centro Ecuatoriano de Investigación Geográfica, en el marco del acuerdo de Cooperación Científica entre el Instituto Panamericano de Geografía e Historia, sección Nacional del Ecuador, y el Instituto Francés de Investigación Científica para el Desarollo en Cooperación.
+```{r}
+valueBox(" ", icon = "fa-sharp fa-solid fa-pen", col="#FFC1C1")
+```
+***
+### CEPAL (2018). Los efectos y desafíos de la transformación demográfica en América. https://www.cepal.org/es/enfoques/efectos-desafios-la-transformacion-demografica-america-latina-caribe
+```{r}
+valueBox(" ", icon = "fa-sharp fa-solid fa-pen", col="#FFC1C1")
+```
+***
+
+### Miller, T., & Mejía-Guevara, I. (2020). El envejecimiento de la población en Ecuador: la revolución silenciosa. ResearchGate. https://www.researchgate.net/publication/343933073_El_envejecimiento_de_la_poblacion_en_Ecuador_la_revolucion_silenciosa
+
+```{r}
+valueBox(" ", icon = "fa-sharp fa-solid fa-pen", col="#FFC1C1")
+```
+***
